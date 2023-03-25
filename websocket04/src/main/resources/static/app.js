@@ -24,6 +24,20 @@ function connectPrivate() {
     });
 }
 
+function disconnect() {
+    console.log("disconnect() 1");
+    console.log('disconnect() 2 ' + stompClient);
+    if (stompClient !== null) {
+        console.log('disconnect() 3 ' + stompClient);
+        stompClient.disconnect();
+        console.log('disconnect() 4 ' + stompClient);
+    }
+    console.log('disconnect() 5 ' + stompClient);
+    stompClient = null
+    console.log('disconnect() 6 ' + stompClient);
+    console.log("Disconnected");
+}
+
 function sendEmailPrivate() {
     var subject = document.getElementById('subject').value;
     stompClient.send("/app/send-email-private/" + webSocketId,
