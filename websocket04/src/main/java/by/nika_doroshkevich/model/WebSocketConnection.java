@@ -19,14 +19,17 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "web_socket_connection")
+public class WebSocketConnection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "first_user")
+    private String firstUser;
+
+    @Column(name = "second_user")
+    private String secondUser;
 }

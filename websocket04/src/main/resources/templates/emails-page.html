@@ -2,19 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Hello WebSocket</title>
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="/main.css" rel="stylesheet">
-    <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/app.js"></script>
+
+    <script src="/webjars/sockjs-client/1.0.2/sockjs.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3/stomp.js"></script>
+
+    <script src="/webjars/jquery/3.1.1-1/jquery.js"></script>
+    <script src="/app.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="main-content" class="container">
     <div class="row row-bordered">
         <div class="col-md-12">
             <div>
-                <h4 th:text="${currentUser.username}"></h4>
+                <h4 id="currentUserUsername" th:text="${currentUser.username}"></h4>
             </div>
         </div>
     </div>
@@ -32,14 +34,11 @@
             <div class="form-group">
                 <textarea placeholder="Message" class="form-control" id="body" rows="4" required></textarea>
             </div>
+<!--            <div class="form-group">-->
+<!--                <button id="connectPrivateButton" onclick="connectPrivate()">Connect Private</button>-->
+<!--            </div>-->
             <div class="form-group">
-                <button id="connect" onclick="connect();">Connect</button>
-                <button id="disconnect" disabled="disabled" onclick="disconnect();">
-                    Disconnect
-                </button>
-            </div>
-            <div class="form-group">
-                <button id="sendEmail" onclick="sendEmail();">Send email</button>
+                <button id="sendEmailPrivate" disabled onclick="sendEmailPrivate()">Send email Private</button>
             </div>
         </div>
         <div class="col-md-7">
@@ -56,4 +55,23 @@
     </div>
 </div>
 </body>
+<script>
+    $("#dropDownList").change(function() {
+        // var selectedVal = this.value;
+        var selectedVal = $('#dropDownList').val();
+        console.log('dropDownList() 1 ' + selectedVal);
+        var selectedTest = $('#dropDownList :selected').text();
+        console.log('dropDownList() 2 ' + selectedTest);
+        if (selectedVal > 0) {
+            $('#sendEmailPrivate').removeAttr('disabled');
+            var currentUserUsername = $("#currentUserUsername").text();
+            console.log('dropDownList() 3 ' + currentUserUsername);
+            createWebSocketConnection(currentUserUsername, selectedTest);
+            console.log('dropDownList() 4 ');
+            connectPrivate();
+        } else {
+            $('#sendEmailPrivate').attr('disabled','disabled');
+        }
+    });
+</script>
 </html>
