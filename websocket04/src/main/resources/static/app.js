@@ -7,9 +7,11 @@ function connectPrivate() {
     console.log("connectPrivate() 2");
     stompClient = Stomp.over(socket);
     console.log("connectPrivate() 3");
+    console.log('connectPrivate() 3.1 ' + stompClient);
     stompClient.connect({}, function (frame) {
         console.log("connectPrivate() 4");
         console.log('connectPrivate() 5 ' + frame);
+        console.log('connectPrivate() 5.1 ' + webSocketId);
         stompClient.subscribe('/user/' + webSocketId + '/topic/emails', function (email) {
             console.log("connectPrivate() 6");
             console.log('connectPrivate() 7 ' + email);
