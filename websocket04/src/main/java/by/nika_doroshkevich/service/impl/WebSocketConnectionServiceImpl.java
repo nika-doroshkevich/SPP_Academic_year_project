@@ -1,13 +1,14 @@
-package by.nika_doroshkevich.service;
+package by.nika_doroshkevich.service.impl;
 
 import by.nika_doroshkevich.model.WebSocketConnection;
 import by.nika_doroshkevich.repository.WebSocketConnectionRepository;
+import by.nika_doroshkevich.service.WebSocketConnectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class WebSocketConnectionServiceImpl implements WebSocketConnectionService{
+public class WebSocketConnectionServiceImpl implements WebSocketConnectionService {
 
     private final WebSocketConnectionRepository webSocketConnectionRepository;
 

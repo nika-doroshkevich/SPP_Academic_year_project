@@ -61,3 +61,20 @@ function createWebSocketConnection(firstUser, secondUser) {
         })
         .catch(err => console.log(err))
 }
+
+function showPreviousMessages() {
+    console.log("showPreviousMessages() 1");
+    console.log('showPreviousMessages() 2 ' + webSocketId);
+    // fetch('/api/emails/' + webSocketId)
+    fetch('/api/emails/' + 1)
+        .then(function (response) {
+            console.log('showPreviousMessages() 3 ' + response);
+            const parsed = JSON.parse(response);
+            console.log('showPreviousMessages() 4 ' + parsed);
+            const data = parsed.data;
+            console.log('showPreviousMessages() 5 ' + data);
+            data.forEach(cur => {
+                console.log('showPreviousMessages() 6 ' + cur);
+            });
+        })
+}

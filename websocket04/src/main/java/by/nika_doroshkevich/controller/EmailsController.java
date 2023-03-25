@@ -1,6 +1,7 @@
 package by.nika_doroshkevich.controller;
 
 import by.nika_doroshkevich.model.Email;
+import by.nika_doroshkevich.service.EmailsThreadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 public class EmailsController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final EmailsThreadService emailsThreadService;
 
     @MessageMapping("/send-email")
     @SendTo("/topic/emails")
@@ -28,6 +30,7 @@ public class EmailsController {
 
     @MessageMapping("/send-email-private/{id}")
     public void sendMessagePrivate(@DestinationVariable String id, Email email) {
+        emailsThreadService.storeEmail(Integer.parseInt(id), email);
         simpMessagingTemplate.convertAndSendToUser(
                 id,
                 "/topic/emails",

@@ -1,7 +1,8 @@
-package by.nika_doroshkevich.service;
+package by.nika_doroshkevich.service.impl;
 
 import by.nika_doroshkevich.model.User;
 import by.nika_doroshkevich.repository.UserRepository;
+import by.nika_doroshkevich.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

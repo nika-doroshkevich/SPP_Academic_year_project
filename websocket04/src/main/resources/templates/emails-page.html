@@ -34,6 +34,9 @@
             <div class="form-group">
                 <textarea placeholder="Message" class="form-control" id="body" rows="4" required></textarea>
             </div>
+<!--            <div class="form-group">-->
+<!--                <button id="connectPrivateButton" onclick="connectPrivate()">Connect Private</button>-->
+<!--            </div>-->
             <div class="form-group">
                 <button id="sendEmailPrivate" disabled onclick="sendEmailPrivate()">Send email Private</button>
             </div>
@@ -67,6 +70,8 @@
             createWebSocketConnection(currentUserUsername, selectedTest);
             console.log('dropDownList() 4 ');
             connectPrivate();
+            console.log('dropDownList() 5 ');
+            showPreviousMessages();
         } else {
             disconnect();
             $('#sendEmailPrivate').attr('disabled','disabled');
