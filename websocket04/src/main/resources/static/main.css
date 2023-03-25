@@ -12,3 +12,10 @@ body {
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+
+.row-bordered:after {
+    content: "";
+    display: block;
+    border-bottom: 1px solid #000000;
+    margin: 15px 0px;
+}

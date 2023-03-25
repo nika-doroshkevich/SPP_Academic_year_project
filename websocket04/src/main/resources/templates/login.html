@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Hello WebSocket</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/app.js"></script>
 </head>
 <body>
 <div id="main-content" class="container">
@@ -15,11 +12,11 @@
         <div class="col-md-3">
         </div>
         <div class="col-md-6 text-center">
-            <form class="form-inline">
+            <form class="form-inline" th:action="@{/login}" th:object="${user}" method="post">
                 <div class="form-group">
-                    <input type="text" id="name" class="form-control" placeholder="Enter your name">
+                    <input type="text" class="form-control" placeholder="Enter your username" th:field="*{username}"/>
                 </div>
-                <button id="send" class="btn btn-default" type="submit">Login</button>
+                <button class="btn btn-default" type="submit">Login</button>
             </form>
         </div>
         <div class="col-md-3">
