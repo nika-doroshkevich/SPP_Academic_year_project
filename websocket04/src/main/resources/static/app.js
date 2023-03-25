@@ -1,9 +1,9 @@
-var stompClient = null;
-var webSocketId = null;
+let stompClient = null;
+let webSocketId = null;
 
 function connectPrivate() {
     console.log("connectPrivate() 1");
-    var socket = new SockJS('/emails-websocket');
+    let socket = new SockJS('/emails-websocket');
     console.log("connectPrivate() 2");
     stompClient = Stomp.over(socket);
     console.log("connectPrivate() 3");
@@ -17,7 +17,7 @@ function connectPrivate() {
             console.log('connectPrivate() 7 ' + email);
             console.log('connectPrivate() 8 ' + email.body);
             console.log('connectPrivate() 9 ' + JSON.parse(email.body).subject);
-            var subject = JSON.parse(email.body).subject;
+            let subject = JSON.parse(email.body).subject;
             console.log('connectPrivate() 10 ' + subject);
             showEmail(subject);
         });
@@ -39,7 +39,7 @@ function disconnect() {
 }
 
 function sendEmailPrivate() {
-    var subject = document.getElementById('subject').value;
+    let subject = document.getElementById('subject').value;
     stompClient.send("/app/send-email-private/" + webSocketId,
         {},
         JSON.stringify({'subject': subject}));
@@ -51,9 +51,9 @@ function showEmail(subject) {
     $("#greetings").append("<tr><td>" + subject + "</td></tr>");
 }
 
-function createWebSocketConnection(firstUser, secondUser) {
+async function createWebSocketConnection(firstUser, secondUser) {
     console.log('createWebSocketConnection() 1 ' + firstUser + ' ' + secondUser);
-    fetch('/api/websockets/' + firstUser + '/' + secondUser)
+    await fetch('/api/websockets/' + firstUser + '/' + secondUser)
         .then(response => response.text())
         .then((response) => {
             webSocketId = response;
@@ -62,19 +62,23 @@ function createWebSocketConnection(firstUser, secondUser) {
         .catch(err => console.log(err))
 }
 
-function showPreviousMessages() {
+async function showPreviousMessages() {
+    let listMessages = null;
     console.log("showPreviousMessages() 1");
     console.log('showPreviousMessages() 2 ' + webSocketId);
-    // fetch('/api/emails/' + webSocketId)
-    fetch('/api/emails/' + 1)
-        .then(function (response) {
-            console.log('showPreviousMessages() 3 ' + response);
-            const parsed = JSON.parse(response);
-            console.log('showPreviousMessages() 4 ' + parsed);
-            const data = parsed.data;
-            console.log('showPreviousMessages() 5 ' + data);
-            data.forEach(cur => {
-                console.log('showPreviousMessages() 6 ' + cur);
-            });
-        })
+
+    const response = await fetch('/api/emails/' + webSocketId, {
+        method: 'GET',
+        headers: {'Accept': 'application/json'}
+    });
+
+    if (response.ok === true) {
+        listMessages = await response.json();
+        //console.log(listMessages);
+        listMessages.forEach(element => {
+            let messageValue = element.message;
+            //console.log(mess);
+            showEmail(messageValue)
+        });
+    }
 }

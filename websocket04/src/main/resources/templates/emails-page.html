@@ -10,6 +10,7 @@
 
     <script src="/webjars/jquery/3.1.1-1/jquery.js"></script>
     <script src="/app.js" type="text/javascript"></script>
+
 </head>
 <body>
 <div id="main-content" class="container">
@@ -55,27 +56,5 @@
     </div>
 </div>
 </body>
-<script>
-    $("#dropDownList").change(function() {
-        // var selectedVal = this.value;
-        var selectedVal = $('#dropDownList').val();
-        console.log('dropDownList() 1 ' + selectedVal);
-        var selectedTest = $('#dropDownList :selected').text();
-        console.log('dropDownList() 2 ' + selectedTest);
-        if (selectedVal > 0) {
-            $('#sendEmailPrivate').removeAttr('disabled');
-            var currentUserUsername = $("#currentUserUsername").text();
-            console.log('dropDownList() 3 ' + currentUserUsername);
-            disconnect();
-            createWebSocketConnection(currentUserUsername, selectedTest);
-            console.log('dropDownList() 4 ');
-            connectPrivate();
-            console.log('dropDownList() 5 ');
-            showPreviousMessages();
-        } else {
-            disconnect();
-            $('#sendEmailPrivate').attr('disabled','disabled');
-        }
-    });
-</script>
+<script src="/main.js" type="text/javascript"></script>
 </html>
