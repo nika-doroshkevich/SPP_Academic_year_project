@@ -30,6 +30,6 @@ public class LoginController {
 
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
-        return "emails-page";
+        return "messenger-page";
     }
 }
