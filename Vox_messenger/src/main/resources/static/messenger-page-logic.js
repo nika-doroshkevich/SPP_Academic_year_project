@@ -19,8 +19,10 @@ function connectPrivate() {
             console.log('connectPrivate() 8 ' + email.body);
             console.log('connectPrivate() 9 ' + JSON.parse(email.body).subject);
             let subject = JSON.parse(email.body).subject;
+            let sendingTime = JSON.parse(email.body).sendingTime;
             console.log('connectPrivate() 10 ' + subject);
-            showOneMessage(subject);
+            let currentUserId = $("#currentUserId").text();
+            showOneMessage(subject, currentUserId, sendingTime);
         });
     });
 }
@@ -43,25 +45,47 @@ function sendMessage() {
     console.log("sendMessage");
     let message = document.getElementById('message').value;
     console.log("message" + message);
-    stompClient.send("/app/send-email-private/" + webSocketId,
+    let currentUserId = $("#currentUserId").text();
+    stompClient.send("/app/send-email-private/" + webSocketId + "/" + currentUserId,
         {},
-        JSON.stringify({'subject': message}));
+        JSON.stringify({'subject': message, 'sendingTime': null}));
 }
 
-function showOneMessage(message) {
-    console.log("showEmail() 1");
+function showOneMessage(message, userId, sendingTime) {
+    //console.log("showEmail() 1");
+    let messageHtml;
+    let currentUserId = $("#currentUserId").text();
 
-    const messageHtml = ` <li class="clearfix">
+    let timeWithoutSeconds = sendingTime.substr(0, 5);
+    //console.log("timeWithoutSeconds " + timeWithoutSeconds);
+
+    if (userId === currentUserId) {
+        messageHtml = `<li class="clearfix message-item">
+                            <div class="message-data text-right" >
+                                <span class="message-data-time">${timeWithoutSeconds}</span>
+                            </div>
+                            <div class="message other-message float-right">${message}</div>
+                       </li>`;
+    } else {
+        messageHtml = `<li class="clearfix message-item">
                             <div class="message-data">
-                                <span class="message-data-time">10:12 AM, Today</span>
+                                <span class="message-data-time">${timeWithoutSeconds}</span>
                             </div>
                             <div class="message my-message">${message}</div>
-                            </li>`;
+                       </li>`;
+    }
 
     let messages = document.querySelector('#messages');
     let li = document.createElement('li');
     li.innerHTML = messageHtml;
     messages.append(li);
+}
+
+function cleanPreviousMessages() {
+    console.log("clean");
+
+    document.querySelectorAll('.message-item')
+        .forEach(element => element.remove());
 }
 
 async function createWebSocketConnection(firstUser, secondUser) {
@@ -76,6 +100,7 @@ async function createWebSocketConnection(firstUser, secondUser) {
 }
 
 async function showPreviousMessages() {
+    cleanPreviousMessages();
     let listMessages = null;
     console.log("showPreviousMessages() 1");
     console.log('showPreviousMessages() 2 ' + webSocketId);
@@ -87,11 +112,14 @@ async function showPreviousMessages() {
 
     if (response.ok === true) {
         listMessages = await response.json();
-        //console.log(listMessages);
+        console.log("listMessages: ");
+        console.log(listMessages);
         listMessages.forEach(element => {
             let messageValue = element.message;
-            //console.log(mess);
-            showOneMessage(messageValue)
+            let userIdValue = element.userId;
+            let sendingTimeValue = element.sendingTime;
+            console.log("sendingTimeValue: " + sendingTimeValue);
+            showOneMessage(messageValue, userIdValue, sendingTimeValue);
         });
     }
 }
@@ -109,12 +137,12 @@ async function onLoadEvent() {
         listUsers.forEach(element => {
             //let userValue = element.username;
             //console.log("user " + userValue);
-            getCard(element)
+            showListOfUsers(element);
         });
     }
 }
 
-function getCard(user) {
+function showListOfUsers(user) {
     //console.log("user.username " + user.username);
     const userHtml = ` <li class="clearfix" onclick="connection(${user.id})">
                             <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
@@ -128,6 +156,10 @@ function getCard(user) {
     let li = document.createElement('li');
     li.innerHTML = userHtml;
     users.append(li);
+}
+
+function showInfoAboutUser(username) {
+    document.getElementById('infoUsername').textContent = username;
 }
 
 async function connection(selected) {
@@ -150,5 +182,6 @@ async function connection(selected) {
     console.log("createWebSocketConnection");
     connectPrivate();
     console.log("connectPrivate");
+    showInfoAboutUser(connectedUsername);
     await showPreviousMessages();
 }

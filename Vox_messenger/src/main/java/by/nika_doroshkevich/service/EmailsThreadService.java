@@ -9,5 +9,5 @@ public interface EmailsThreadService {
 
     List<EmailsThread> getEmailsBySocketId(String socketId);
 
-    EmailsThread storeEmail(Integer socketId, Email email);
+    EmailsThread storeEmail(Integer socketId, Email email, Integer userId);
 }

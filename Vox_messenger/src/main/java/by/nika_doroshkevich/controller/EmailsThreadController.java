@@ -31,6 +31,8 @@ public class EmailsThreadController {
         for (EmailsThread email: listEmailsThread) {
             EmailsThreadDto emailDto = new EmailsThreadDto();
             emailDto.setMessage(email.getEmailSubject());
+            emailDto.setUserId(email.getUserId().toString());
+            emailDto.setSendingTime(email.getSendingTime());
             listEmailsThreadDto.add(emailDto);
         }
         return listEmailsThreadDto;

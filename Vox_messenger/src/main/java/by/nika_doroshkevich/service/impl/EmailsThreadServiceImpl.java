@@ -9,6 +9,8 @@ import by.nika_doroshkevich.service.EmailsThreadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -26,15 +28,16 @@ public class EmailsThreadServiceImpl implements EmailsThreadService {
     }
 
     @Override
-    public EmailsThread storeEmail(Integer socketId, Email email) {
+    public EmailsThread storeEmail(Integer socketId, Email email, Integer userId) {
         WebSocketConnection webSocketConnection = webSocketConnectionRepository.findById(socketId).orElse(null);
         EmailsThread newEmailsThread = EmailsThread.builder()
                 .webSocketConnection(webSocketConnection)
                 .emailSubject(email.getSubject())
+                .userId(userId)
+                .sendingDate(LocalDate.now())
+                .sendingTime(LocalTime.now())
                 .build();
         EmailsThread savedEmailsThread = emailsThreadRepository.save(newEmailsThread);
         return savedEmailsThread;
     }
-
-
 }
