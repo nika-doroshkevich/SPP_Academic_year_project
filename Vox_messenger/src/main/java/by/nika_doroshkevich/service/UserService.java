@@ -9,4 +9,6 @@ public interface UserService {
     User loadOrSave(User user);
 
     List<User> findAll();
+
+    User getUserByUsername(String username);
 }

@@ -15,4 +15,5 @@ public class Email {
 
     private String subject;
     private LocalTime sendingTime;
+    private Integer senderUserId;
 }

@@ -20,9 +20,10 @@ function connectPrivate() {
             console.log('connectPrivate() 9 ' + JSON.parse(email.body).subject);
             let subject = JSON.parse(email.body).subject;
             let sendingTime = JSON.parse(email.body).sendingTime;
+            let senderUserId = JSON.parse(email.body).senderUserId;
             console.log('connectPrivate() 10 ' + subject);
             let currentUserId = $("#currentUserId").text();
-            showOneMessage(subject, currentUserId, sendingTime);
+            showOneMessage(subject, currentUserId, sendingTime, senderUserId);
         });
     });
 }
@@ -46,33 +47,57 @@ function sendMessage() {
     let message = document.getElementById('message').value;
     console.log("message" + message);
     let currentUserId = $("#currentUserId").text();
+    console.log("currentUsername" + currentUserId);
     stompClient.send("/app/send-email-private/" + webSocketId + "/" + currentUserId,
         {},
-        JSON.stringify({'subject': message, 'sendingTime': null}));
+        JSON.stringify({'subject': message, 'sendingTime': null, 'senderUserId':null}));
 }
 
-function showOneMessage(message, userId, sendingTime) {
-    //console.log("showEmail() 1");
+function showOneMessage(message, userId, sendingTime, senderUserId) {
     let messageHtml;
     let currentUserId = $("#currentUserId").text();
 
     let timeWithoutSeconds = sendingTime.substr(0, 5);
-    //console.log("timeWithoutSeconds " + timeWithoutSeconds);
 
-    if (userId === currentUserId) {
-        messageHtml = `<li class="clearfix message-item">
+    //console.log("currentUserId " + currentUserId);
+    //console.log("userId " + userId);
+    //console.log("senderUserId " + senderUserId);
+
+    let currentUserIdText = "" + currentUserId;
+    let senderUserIdText = "" + senderUserId;
+
+    if (senderUserId === null || currentUserIdText === senderUserIdText) {
+        if (userId === currentUserId) {
+            messageHtml = `<li class="clearfix message-item">
                             <div class="message-data text-right" >
                                 <span class="message-data-time">${timeWithoutSeconds}</span>
                             </div>
                             <div class="message other-message float-right">${message}</div>
                        </li>`;
-    } else {
-        messageHtml = `<li class="clearfix message-item">
+        } else {
+            messageHtml = `<li class="clearfix message-item">
                             <div class="message-data">
                                 <span class="message-data-time">${timeWithoutSeconds}</span>
                             </div>
                             <div class="message my-message">${message}</div>
                        </li>`;
+        }
+    } else {
+        if (userId === currentUserId) {
+            messageHtml = `<li class="clearfix message-item">
+                            <div class="message-data">
+                                <span class="message-data-time">${timeWithoutSeconds}</span>
+                            </div>
+                            <div class="message my-message">${message}</div>
+                       </li>`;
+        } else {
+            messageHtml = `<li class="clearfix message-item">
+                            <div class="message-data text-right" >
+                                <span class="message-data-time">${timeWithoutSeconds}</span>
+                            </div>
+                            <div class="message other-message float-right">${message}</div>
+                       </li>`;
+        }
     }
 
     let messages = document.querySelector('#messages');
@@ -119,7 +144,7 @@ async function showPreviousMessages() {
             let userIdValue = element.userId;
             let sendingTimeValue = element.sendingTime;
             console.log("sendingTimeValue: " + sendingTimeValue);
-            showOneMessage(messageValue, userIdValue, sendingTimeValue);
+            showOneMessage(messageValue, userIdValue, sendingTimeValue, null);
         });
     }
 }
@@ -168,14 +193,14 @@ async function connection(selected) {
 
     listUsers.forEach(element => {
         if (element.id === selected) {
-            //console.log("element.id" + element.id);
             connectedUsername = element.username;
-            //console.log("element.username " + element.username);
         }
     });
     $('#sendMessage').removeAttr('disabled');
     let currentUserUsername = $("#currentUserUsername").text();
-    console.log("currentUserUsername " + currentUserUsername);
+    //console.log("currentUserUsername " + currentUserUsername);
+    let currentUserId = $("#currentUserId").text();
+    //console.log("currentUserId " + currentUserId);
     disconnect();
     console.log("disconnect");
     await createWebSocketConnection(currentUserUsername, connectedUsername);

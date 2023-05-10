@@ -28,7 +28,7 @@ public class EmailsThreadController {
     public List<EmailsThreadDto> getOrCreateWebSocketConnection(@PathVariable String socketId) {
         List<EmailsThread> listEmailsThread = emailsThreadService.getEmailsBySocketId(socketId);
         List<EmailsThreadDto> listEmailsThreadDto = new ArrayList<>();
-        for (EmailsThread email: listEmailsThread) {
+        for (EmailsThread email : listEmailsThread) {
             EmailsThreadDto emailDto = new EmailsThreadDto();
             emailDto.setMessage(email.getEmailSubject());
             emailDto.setUserId(email.getUserId().toString());

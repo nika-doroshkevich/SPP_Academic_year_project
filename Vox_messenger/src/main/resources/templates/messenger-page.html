@@ -25,9 +25,7 @@
 
                 <div id="plist" class="people-list">
 
-                    <div id="currentUserUsername" th:text="${currentUser.username}"></div>
-                    <div id="currentUserId" th:text="${currentUser.id}"></div>
-
+                    <a href="#popup"><i class="fa fa-user-circle fa-2x" aria-hidden="true"></i> Account</a>
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search...">
                     </div>
@@ -127,5 +125,52 @@
         </div>
     </div>
 </div>
+
+<<div id="popup" class="popup">
+    <a href="#" class="popup-area"></a>
+    <div class="popup-body">
+        <div class="popup-content">
+            <a href="#" class="popup-close">x</a>
+            <div class="popup-title">Information about user</div>
+            <img class="popup-image" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
+            <div class="popup-details">
+                <!--<div id="currentUserId" th:text="${currentUserId}"></div>-->
+                <p class="font-weight-bold"><label>Your personal identification number: #<span id="currentUserId" th:text="${currentUserId}"></span></label></p>
+                <p class="font-weight-bold"><label>Name: <span id="currentUserUsername" th:text="${#authentication.name}"></span></label></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal fade" id="reg-auth-Modal" tabindex="-1" role="dialog" aria-labelledby="myModal-reg-Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModal-reg-Label">Registration and Authorization</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mr-12">
+                    <label class="mr-10">Email</label>
+                    <input type = "text" class="form-control" id="emailField">
+                </div>
+                <div class="form-group mr-12">
+                    <label class="mr-10">Password</label>
+                    <input type = "password" class="form-control" id="passwordField">
+                </div>
+            </div>
+            <h6 style="color: crimson; display: none" id="warning" class = "px-2">User with this email already exists</h6>
+            <h6 style="color: green; display: none" id="auth-reg" class = "px-2">is login</h6>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="auth(`${document.getElementById('emailField').value}`, `${document.getElementById('passwordField').value}`)">Authorize</button>
+                <button type="button" class="btn btn-primary" onclick="auth(`${document.getElementById('emailField').value}`, `${document.getElementById('passwordField').value}`, true)">Register</button>
+
+            </div>
+        </div>
+    </div>
+</div>-->
+
 </body>
 </html>

@@ -34,6 +34,7 @@ public class EmailsController {
                                    Email email, @DestinationVariable String userId) {
         EmailsThread emailsThread = emailsThreadService.storeEmail(Integer.parseInt(id), email, Integer.parseInt(userId));
         email.setSendingTime(emailsThread.getSendingTime());
+        email.setSenderUserId(Integer.parseInt(userId));
         simpMessagingTemplate.convertAndSendToUser(
                 id,
                 "/topic/emails",
