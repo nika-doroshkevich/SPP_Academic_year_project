@@ -49,6 +49,7 @@ public class RegistrationController {
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .email(userDto.getEmail())
                 .registrationDate(LocalDate.now())
+                .avatarImage("empty.png")
                 .build();
     }
 }

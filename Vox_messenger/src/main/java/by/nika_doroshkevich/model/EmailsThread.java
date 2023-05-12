@@ -14,8 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -41,9 +40,6 @@ public class EmailsThread {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "sending_date")
-    private LocalDate sendingDate;
-
-    @Column(name = "sending_time")
-    private LocalTime sendingTime;
+    @Column(name = "sending_datetime")
+    private LocalDateTime sendingDateTime;
 }

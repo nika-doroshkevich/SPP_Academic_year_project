@@ -23,17 +23,11 @@ public class EmailsController {
         return email;
     }
 
-//    @MessageMapping("/send-email-private")
-//    @SendTo("/topic/emails")
-//    public Email sendMessagePrivate(Email email) {
-//        return email;
-//    }
-
     @MessageMapping("/send-email-private/{id}/{userId}")
     public void sendMessagePrivate(@DestinationVariable String id,
                                    Email email, @DestinationVariable String userId) {
         EmailsThread emailsThread = emailsThreadService.storeEmail(Integer.parseInt(id), email, Integer.parseInt(userId));
-        email.setSendingTime(emailsThread.getSendingTime());
+        email.setSendingDateTime(emailsThread.getSendingDateTime());
         email.setSenderUserId(Integer.parseInt(userId));
         simpMessagingTemplate.convertAndSendToUser(
                 id,

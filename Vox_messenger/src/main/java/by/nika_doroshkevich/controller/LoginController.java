@@ -22,16 +22,6 @@ public class LoginController {
         return "login";
     }
 
-//    @PostMapping(value = {"/login"})
-//    public String login(@ModelAttribute("user") User user, Model model) {
-//        User currentUser = userService.loadOrSave(user);
-//        model.addAttribute("currentUser", currentUser);
-//
-//        List<User> users = userService.findAll();
-//        model.addAttribute("users", users);
-//        return "messenger-page";
-//    }
-
     @GetMapping("/")
     public String greeting(Model model, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());

@@ -9,8 +9,7 @@ import by.nika_doroshkevich.service.EmailsThreadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,8 +33,7 @@ public class EmailsThreadServiceImpl implements EmailsThreadService {
                 .webSocketConnection(webSocketConnection)
                 .emailSubject(email.getSubject())
                 .userId(userId)
-                .sendingDate(LocalDate.now())
-                .sendingTime(LocalTime.now())
+                .sendingDateTime(LocalDateTime.now())
                 .build();
         EmailsThread savedEmailsThread = emailsThreadRepository.save(newEmailsThread);
         return savedEmailsThread;

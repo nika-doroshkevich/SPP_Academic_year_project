@@ -18,12 +18,6 @@ public class EmailsThreadController {
 
     private final EmailsThreadService emailsThreadService;
 
-//    @GetMapping(value = "/api/emails/{socketId}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public List<EmailsThread> getOrCreateWebSocketConnection(@PathVariable String socketId) {
-//        List<EmailsThread> listEmailsThread = emailsThreadService.getEmailsBySocketId(socketId);
-//        return listEmailsThread;
-//    }
-
     @GetMapping(value = "/api/emails/{socketId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmailsThreadDto> getOrCreateWebSocketConnection(@PathVariable String socketId) {
         List<EmailsThread> listEmailsThread = emailsThreadService.getEmailsBySocketId(socketId);
@@ -32,7 +26,7 @@ public class EmailsThreadController {
             EmailsThreadDto emailDto = new EmailsThreadDto();
             emailDto.setMessage(email.getEmailSubject());
             emailDto.setUserId(email.getUserId().toString());
-            emailDto.setSendingTime(email.getSendingTime());
+            emailDto.setSendingDateTime(email.getSendingDateTime());
             listEmailsThreadDto.add(emailDto);
         }
         return listEmailsThreadDto;

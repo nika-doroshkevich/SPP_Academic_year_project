@@ -19,11 +19,11 @@ function connectPrivate() {
             console.log('connectPrivate() 8 ' + email.body);
             console.log('connectPrivate() 9 ' + JSON.parse(email.body).subject);
             let subject = JSON.parse(email.body).subject;
-            let sendingTime = JSON.parse(email.body).sendingTime;
+            let sendingDateTime = JSON.parse(email.body).sendingDateTime;
             let senderUserId = JSON.parse(email.body).senderUserId;
             console.log('connectPrivate() 10 ' + subject);
             let currentUserId = $("#currentUserId").text();
-            showOneMessage(subject, currentUserId, sendingTime, senderUserId);
+            showOneMessage(subject, currentUserId, sendingDateTime, senderUserId);
         });
     });
 }
@@ -46,26 +46,25 @@ function sendMessage() {
     console.log("sendMessage");
     let message = document.getElementById('message').value;
     document.getElementById('message').value = "";
-    console.log("message" + message);
-    if (message != null || message !== "") {
-        let currentUserId = $("#currentUserId").text();
-        console.log("currentUsername" + currentUserId);
-        stompClient.send("/app/send-email-private/" + webSocketId + "/" + currentUserId,
-            {},
-            JSON.stringify({'subject': message, 'sendingTime': null, 'senderUserId': null}));
+
+    message = message + "";
+    if (message.trim() !== "") {
+
+        if (!!message) {
+            let currentUserId = $("#currentUserId").text();
+            console.log("currentUsername" + currentUserId);
+            stompClient.send("/app/send-email-private/" + webSocketId + "/" + currentUserId,
+                {},
+                JSON.stringify({'subject': message, 'sendingDateTime': null, 'senderUserId': null}));
+        }
     }
 }
 
-function showOneMessage(message, userId, sendingTime, senderUserId) {
+function showOneMessage(message, userId, sendingDateTime, senderUserId) {
     let messageHtml;
     let currentUserId = $("#currentUserId").text();
 
-    let timeWithoutSeconds = sendingTime.substr(0, 5);
-
-    //console.log("currentUserId " + currentUserId);
-    //console.log("userId " + userId);
-    //console.log("senderUserId " + senderUserId);
-
+    let timeFormatted = sendingDateTime.substr(11, 5) + " " + sendingDateTime.substr(0, 10);
     let currentUserIdText = "" + currentUserId;
     let senderUserIdText = "" + senderUserId;
 
@@ -73,14 +72,14 @@ function showOneMessage(message, userId, sendingTime, senderUserId) {
         if (userId === currentUserId) {
             messageHtml = `<li class="clearfix message-item">
                             <div class="message-data text-right" >
-                                <span class="message-data-time">${timeWithoutSeconds}</span>
+                                <span class="message-data-time">${timeFormatted}</span>
                             </div>
                             <div class="message other-message float-right">${message}</div>
                        </li>`;
         } else {
             messageHtml = `<li class="clearfix message-item">
                             <div class="message-data">
-                                <span class="message-data-time">${timeWithoutSeconds}</span>
+                                <span class="message-data-time">${timeFormatted}</span>
                             </div>
                             <div class="message my-message">${message}</div>
                        </li>`;
@@ -89,14 +88,14 @@ function showOneMessage(message, userId, sendingTime, senderUserId) {
         if (userId === currentUserId) {
             messageHtml = `<li class="clearfix message-item">
                             <div class="message-data">
-                                <span class="message-data-time">${timeWithoutSeconds}</span>
+                                <span class="message-data-time">${timeFormatted}</span>
                             </div>
                             <div class="message my-message">${message}</div>
                        </li>`;
         } else {
             messageHtml = `<li class="clearfix message-item">
                             <div class="message-data text-right" >
-                                <span class="message-data-time">${timeWithoutSeconds}</span>
+                                <span class="message-data-time">${timeFormatted}</span>
                             </div>
                             <div class="message other-message float-right">${message}</div>
                        </li>`;
@@ -113,8 +112,6 @@ function showOneMessage(message, userId, sendingTime, senderUserId) {
 }
 
 function cleanPreviousMessages() {
-    console.log("clean");
-
     document.querySelectorAll('.message-item')
         .forEach(element => element.remove());
 }
@@ -148,9 +145,8 @@ async function showPreviousMessages() {
         listMessages.forEach(element => {
             let messageValue = element.message;
             let userIdValue = element.userId;
-            let sendingTimeValue = element.sendingTime;
-            //console.log("sendingTimeValue: " + sendingTimeValue);
-            showOneMessage(messageValue, userIdValue, sendingTimeValue, null);
+            let sendingDateTimeValue = element.sendingDateTime;
+            showOneMessage(messageValue, userIdValue, sendingDateTimeValue, null);
         });
     }
 }
@@ -171,8 +167,8 @@ async function onLoadEvent() {
 }
 
 function cleanDisplayingUsersList() {
-     document.querySelectorAll('.user-item')
-         .forEach(element => element.remove());
+    document.querySelectorAll('.user-item')
+        .forEach(element => element.remove());
 }
 
 function showOneUser(user) {
@@ -180,7 +176,6 @@ function showOneUser(user) {
                             <img src="${user.avatarImage}"/>
                                 <div class="about">
                                 <div class="name">${user.username}</div>
-                                <div class="status"><i class="fa fa-circle online"></i> online</div>
                                 </div>
                         </li>`;
 

@@ -50,8 +50,7 @@
                                 </a>
 
                                 <div class="chat-about">
-                                    <h6 class="m-b-0" id="infoUsername"></h6>
-                                    <!--<small>Last seen: 2 hours ago</small>-->
+                                    <h4 class="m-b-0" id="infoUsername"></h4>
                                 </div>
 
                             </div>
@@ -95,7 +94,6 @@
             <div class="popup-title">Information about user</div>
             <img class="popup-image" th:src="@{${avatar}}">
             <div class="popup-details">
-                <!--<div id="currentUserId" th:text="${currentUserId}"></div>-->
                 <p class="font-weight-bold"><label>Your personal identification number: #<span id="currentUserId"
                                                                                                th:text="${currentUserId}"></span></label>
                 </p>
@@ -104,7 +102,7 @@
 
                 <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
                     <div class="form-group">
-                        <input type="file" name="image" accept="image/*" class="form-control-file">
+                        <input type="file" name="image" accept="image/*" class="form-control-file upload-file">
                     </div>
                     <button type="submit" class="btn btn-primary">Change avatar</button>
                 </form>

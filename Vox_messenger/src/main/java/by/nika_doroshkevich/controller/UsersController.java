@@ -21,7 +21,7 @@ public class UsersController {
     public List<UserDto> getUsers() {
         List<User> listUsers = userServiceImpl.findAll();
         List<UserDto> listUserDto = new ArrayList<>();
-        for (User user: listUsers) {
+        for (User user : listUsers) {
             UserDto userDto = new UserDto();
             userDto.setId(user.getId());
             userDto.setUsername(user.getUsername());
