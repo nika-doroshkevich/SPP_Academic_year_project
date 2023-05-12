@@ -28,4 +28,6 @@ public class UserDto {
     @Email(message = "Email must be valid.")
     @Size(min = 1, max = 63, message = "Email length must be between 1 and 255.")
     private String email;
+
+    private String avatarImage;
 }

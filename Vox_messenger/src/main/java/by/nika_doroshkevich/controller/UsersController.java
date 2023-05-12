@@ -25,6 +25,8 @@ public class UsersController {
             UserDto userDto = new UserDto();
             userDto.setId(user.getId());
             userDto.setUsername(user.getUsername());
+            var avatar = "http://localhost:8080/images/" + user.getAvatarImage();
+            userDto.setAvatarImage(avatar);
             listUserDto.add(userDto);
         }
         return listUserDto;

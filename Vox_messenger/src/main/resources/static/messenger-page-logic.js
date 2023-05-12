@@ -45,12 +45,15 @@ function disconnect() {
 function sendMessage() {
     console.log("sendMessage");
     let message = document.getElementById('message').value;
+    document.getElementById('message').value = "";
     console.log("message" + message);
-    let currentUserId = $("#currentUserId").text();
-    console.log("currentUsername" + currentUserId);
-    stompClient.send("/app/send-email-private/" + webSocketId + "/" + currentUserId,
-        {},
-        JSON.stringify({'subject': message, 'sendingTime': null, 'senderUserId':null}));
+    if (message != null || message !== "") {
+        let currentUserId = $("#currentUserId").text();
+        console.log("currentUsername" + currentUserId);
+        stompClient.send("/app/send-email-private/" + webSocketId + "/" + currentUserId,
+            {},
+            JSON.stringify({'subject': message, 'sendingTime': null, 'senderUserId': null}));
+    }
 }
 
 function showOneMessage(message, userId, sendingTime, senderUserId) {
@@ -104,6 +107,9 @@ function showOneMessage(message, userId, sendingTime, senderUserId) {
     let li = document.createElement('li');
     li.innerHTML = messageHtml;
     messages.append(li);
+
+    let objDiv = document.getElementById("chatHistory");
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
 
 function cleanPreviousMessages() {
@@ -143,7 +149,7 @@ async function showPreviousMessages() {
             let messageValue = element.message;
             let userIdValue = element.userId;
             let sendingTimeValue = element.sendingTime;
-            console.log("sendingTimeValue: " + sendingTimeValue);
+            //console.log("sendingTimeValue: " + sendingTimeValue);
             showOneMessage(messageValue, userIdValue, sendingTimeValue, null);
         });
     }
@@ -158,19 +164,20 @@ async function onLoadEvent() {
 
     if (response.ok === true) {
         listUsers = await response.json();
-        //console.log("listUsers" + listUsers);
         listUsers.forEach(element => {
-            //let userValue = element.username;
-            //console.log("user " + userValue);
-            showListOfUsers(element);
+            showOneUser(element);
         });
     }
 }
 
-function showListOfUsers(user) {
-    //console.log("user.username " + user.username);
-    const userHtml = ` <li class="clearfix" onclick="connection(${user.id})">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+function cleanDisplayingUsersList() {
+     document.querySelectorAll('.user-item')
+         .forEach(element => element.remove());
+}
+
+function showOneUser(user) {
+    const userHtml = ` <li class="clearfix user-item" onclick="connection(${user.id})">
+                            <img src="${user.avatarImage}"/>
                                 <div class="about">
                                 <div class="name">${user.username}</div>
                                 <div class="status"><i class="fa fa-circle online"></i> online</div>
@@ -178,13 +185,32 @@ function showListOfUsers(user) {
                         </li>`;
 
     let users = document.querySelector('#users');
-    let li = document.createElement('li');
-    li.innerHTML = userHtml;
-    users.append(li);
+    let div = document.createElement('div');
+    div.innerHTML = userHtml;
+    users.append(div);
+}
+
+function searchUsers() {
+    let query = document.getElementById('search').value;
+
+    if (query != null || query !== "") {
+        cleanDisplayingUsersList();
+        listUsers.forEach(element => {
+            if (element.username.toLowerCase().includes(query.toLowerCase())) {
+                showOneUser(element);
+            }
+        });
+    }
 }
 
 function showInfoAboutUser(username) {
     document.getElementById('infoUsername').textContent = username;
+
+    listUsers.forEach(element => {
+        if (element.username === username) {
+            document.getElementById("image-container").src = element.avatarImage;
+        }
+    });
 }
 
 async function connection(selected) {
@@ -198,9 +224,6 @@ async function connection(selected) {
     });
     $('#sendMessage').removeAttr('disabled');
     let currentUserUsername = $("#currentUserUsername").text();
-    //console.log("currentUserUsername " + currentUserUsername);
-    let currentUserId = $("#currentUserId").text();
-    //console.log("currentUserId " + currentUserId);
     disconnect();
     console.log("disconnect");
     await createWebSocketConnection(currentUserUsername, connectedUsername);

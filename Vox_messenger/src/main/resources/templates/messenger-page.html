@@ -16,8 +16,6 @@
 </head>
 <body onload="onLoadEvent()">
 
-
-
 <div class="container-fluid">
     <div class="row clearfix">
         <div class="col-lg-12">
@@ -26,62 +24,31 @@
                 <div id="plist" class="people-list">
 
                     <a href="#popup"><i class="fa fa-user-circle fa-2x" aria-hidden="true"></i> Account</a>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search...">
+
+                    <div class="input-group col-sm-12">
+                        <div class="input-group-prepend">
+                            <input type="text" class="form-control" id="search" placeholder="Search user...">
+                            <a href="javascript:searchUsers();" class="btn btn-light" role="button"><i
+                                    class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
                     </div>
-                    <ul class="list-unstyled chat-list mt-2 mb-0" id="users">
-                        <!--<li class="clearfix">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
-                            <div class="about">
-                                <div class="name">Vincent Porter</div>
-                                <div class="status"><i class="fa fa-circle offline"></i> left 7 mins ago</div>
-                            </div>
-                        </li>
-                        <li class="clearfix active">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
-                            <div class="about">
-                                <div class="name">Aiden Chavez</div>
-                                <div class="status"><i class="fa fa-circle online"></i> online</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
-                            <div class="about">
-                                <div class="name">Mike Thomas</div>
-                                <div class="status"><i class="fa fa-circle online"></i> online</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-                            <div class="about">
-                                <div class="name">Christian Kelly</div>
-                                <div class="status"><i class="fa fa-circle offline"></i> left 10 hours ago</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="avatar">
-                            <div class="about">
-                                <div class="name">Monica Ward</div>
-                                <div class="status"><i class="fa fa-circle online"></i> online</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
-                            <div class="about">
-                                <div class="name">Dean Henry</div>
-                                <div class="status"><i class="fa fa-circle offline"></i> offline since Oct 28</div>
-                            </div>
-                        </li>-->
-                    </ul>
+
+                    <div id="userList">
+                        <ul class="list-unstyled chat-list mt-2 mb-0" id="users">
+                            <!--List of users-->
+                        </ul>
+                    </div>
                 </div>
+
                 <div class="chat">
                     <div class="chat-header clearfix">
                         <div class="row">
                             <div class="col-lg-6" id="show-info-about-user">
 
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                                    <img id="image-container" src="">
                                 </a>
+
                                 <div class="chat-about">
                                     <h6 class="m-b-0" id="infoUsername"></h6>
                                     <!--<small>Last seen: 2 hours ago</small>-->
@@ -89,11 +56,7 @@
 
                             </div>
                             <div class="col-lg-6 hidden-sm text-right">
-                                <a href="javascript:void(0);" class="btn btn-outline-secondary"><i
-                                        class="fa fa-camera"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-primary"><i
-                                        class="fa fa-image"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-info"><i
+                                <a href="#popupSettings" class="btn btn-outline-info"><i
                                         class="fa fa-cogs"></i></a>
                                 <a href="javascript:void(0);" class="btn btn-outline-warning"><i
                                         class="fa fa-question"></i></a>
@@ -101,9 +64,9 @@
                         </div>
                     </div>
 
-
-                    <div class="chat-history">
-                        <ul class="m-b-0" id = "messages">
+                    <div class="chat-history" id="chatHistory">
+                        <ul class="m-b-0" id="messages">
+                            <!--Message history-->
                         </ul>
                     </div>
 
@@ -111,12 +74,10 @@
                     <div class="chat-message clearfix">
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend">
-                                <!--<a href="javascript:void(0);" class="input-group-text"><i
-                                        class="fa fa-send"></i></a>-->
-                            <input type="text" class="form-control" id = "message" placeholder="Enter message...">
-                            <a href="javascript:sendMessage();" class="btn btn-primary" id = "sendMessage" disabled role="button"><i class="fa fa-send"></i></a>
+                                <input type="text" class="form-control" id="message" placeholder="Enter message...">
+                                <a href="javascript:sendMessage();" class="btn btn-primary" id="sendMessage" disabled
+                                   role="button"><i class="fa fa-send"></i></a>
                             </div>
-
                         </div>
                     </div>
 
@@ -126,51 +87,66 @@
     </div>
 </div>
 
-<<div id="popup" class="popup">
+<div id="popup" class="popup">
     <a href="#" class="popup-area"></a>
     <div class="popup-body">
         <div class="popup-content">
             <a href="#" class="popup-close">x</a>
             <div class="popup-title">Information about user</div>
-            <img class="popup-image" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
+            <img class="popup-image" th:src="@{${avatar}}">
             <div class="popup-details">
                 <!--<div id="currentUserId" th:text="${currentUserId}"></div>-->
-                <p class="font-weight-bold"><label>Your personal identification number: #<span id="currentUserId" th:text="${currentUserId}"></span></label></p>
-                <p class="font-weight-bold"><label>Name: <span id="currentUserUsername" th:text="${#authentication.name}"></span></label></p>
+                <p class="font-weight-bold"><label>Your personal identification number: #<span id="currentUserId"
+                                                                                               th:text="${currentUserId}"></span></label>
+                </p>
+                <p class="font-weight-bold"><label>Name: <span id="currentUserUsername"
+                                                               th:text="${#authentication.name}"></span></label></p>
+
+                <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="image" accept="image/*" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change avatar</button>
+                </form>
+
             </div>
         </div>
     </div>
 </div>
 
-<!--<div class="modal fade" id="reg-auth-Modal" tabindex="-1" role="dialog" aria-labelledby="myModal-reg-Label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModal-reg-Label">Registration and Authorization</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group mr-12">
-                    <label class="mr-10">Email</label>
-                    <input type = "text" class="form-control" id="emailField">
+<div id="popupSettings" class="popup">
+    <a href="#" class="popup-area"></a>
+    <div class="popup-body">
+        <div class="popup-content">
+            <a href="#" class="popup-close">x</a>
+            <div class="popup-title">Settings</div>
+            <div class="popup-details">
+                <p>Log out of your account</p>
+
+                <div class="log-out-btn">
+                    <form name="logoutForm" th:action="@{/logout}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Log Out"/>
+                    </form>
                 </div>
-                <div class="form-group mr-12">
-                    <label class="mr-10">Password</label>
-                    <input type = "password" class="form-control" id="passwordField">
-                </div>
-            </div>
-            <h6 style="color: crimson; display: none" id="warning" class = "px-2">User with this email already exists</h6>
-            <h6 style="color: green; display: none" id="auth-reg" class = "px-2">is login</h6>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="auth(`${document.getElementById('emailField').value}`, `${document.getElementById('passwordField').value}`)">Authorize</button>
-                <button type="button" class="btn btn-primary" onclick="auth(`${document.getElementById('emailField').value}`, `${document.getElementById('passwordField').value}`, true)">Register</button>
 
             </div>
         </div>
     </div>
-</div>-->
+</div>
+
+<script>
+    $('#message').on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            sendMessage();
+        }
+    });
+
+    $('#search').on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            searchUsers();
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 package by.nika_doroshkevich.controller;
 
 import by.nika_doroshkevich.model.User;
-import by.nika_doroshkevich.service.UserService;
+import by.nika_doroshkevich.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @GetMapping(value = {"/login"})
     public String login(Model model) {
@@ -38,6 +38,9 @@ public class LoginController {
         model.addAttribute("currentUserId", user.getId());
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
+        var avatarName = userService.getAvatarByUsername(principal.getName());
+        var avatar = "http://localhost:8080/images/" + avatarName;
+        model.addAttribute("avatar", avatar);
         return "messenger-page";
     }
 }

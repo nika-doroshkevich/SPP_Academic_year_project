@@ -33,17 +33,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
+    }
 
+    public void saveAvatarImage(String username, String avatarImage) {
         User user = userRepository.findByUsername(username);
-        /*if (users.size() > 1) {
-            throw new IllegalStateException("More than one username with current username!");
-        }
+        user.setAvatarImage(avatarImage);
+        userRepository.save(user);
+    }
 
-        if (users.size() == 0) {
-            return null;
-        }
-
-        return users.get(0);*/
-        return user;
+    public String getAvatarByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        return user.getAvatarImage();
     }
 }

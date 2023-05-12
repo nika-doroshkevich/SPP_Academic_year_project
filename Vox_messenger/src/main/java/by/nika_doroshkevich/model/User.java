@@ -39,4 +39,7 @@ public class User {
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;
+
+    @Column(name = "avatar_image")
+    private String avatarImage;
 }

@@ -121,7 +121,7 @@ body {
 }
 
 .chat .chat-history .message-data {
-    margin-bottom: 15px
+    margin-bottom: 5px
 }
 
 .chat .chat-history .message-data img {
@@ -169,7 +169,6 @@ body {
     position: absolute;
     pointer-events: none;
     border: 10px solid transparent;
-    /*border-bottom-color: #efefef;*/
     margin-left: -10px
 }
 
@@ -179,7 +178,6 @@ body {
 }
 
 .chat .chat-history .other-message:after {
-    /*border-bottom-color: #e8f1f3;*/
     left: 93%
 }
 
@@ -293,7 +291,7 @@ body {
     visibility: hidden;
     overflow-y: auto;
     overflow-x: hidden;
-    z-index: 10001;
+    z-index: 1001;
 }
 
 .popup:target {
@@ -307,7 +305,6 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 100;
 }
 
 .popup-body {
@@ -348,6 +345,11 @@ body {
     width: 150px;
     height: 150px;
     border-radius: 50%
+}
+
+.log-out-btn {
+    display: flex;
+    justify-content: center;
 }
 
 
