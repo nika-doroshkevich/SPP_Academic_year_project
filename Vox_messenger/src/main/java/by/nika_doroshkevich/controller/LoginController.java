@@ -1,11 +1,15 @@
 package by.nika_doroshkevich.controller;
 
 import by.nika_doroshkevich.model.User;
+import by.nika_doroshkevich.security.AppAuthException;
 import by.nika_doroshkevich.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
@@ -16,10 +20,15 @@ public class LoginController {
 
     private final UserServiceImpl userService;
 
-    @GetMapping(value = {"/login"})
-    public String login(Model model) {
+    @GetMapping("/login")
+    public ModelAndView login(@RequestParam(value = "error", required = false) String error, ModelMap model) {
+        if (error != null) {
+            AppAuthException authException = AppAuthException.valueOfCode(error);
+            model.addAttribute("error", authException.getAppException());
+        }
+
         model.addAttribute("user", new User());
-        return "login";
+        return new ModelAndView("login", model);
     }
 
     @GetMapping("/")

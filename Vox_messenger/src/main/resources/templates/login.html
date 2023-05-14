@@ -10,9 +10,9 @@
 <div class="container">
     <h2 class="text-center">Login</h2>
 
-    <!--<div th:if="${error != null}" class="alert alert-danger" th:utext="${error}">
+    <div th:if="${error != null}" class="alert alert-danger" th:utext="${error}">
         error
-    </div>-->
+    </div>
 
     <form th:action="@{/login}" th:object="${user}" method="post">
 

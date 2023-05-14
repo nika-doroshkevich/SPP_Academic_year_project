@@ -1,6 +1,7 @@
 package by.nika_doroshkevich.service;
 
 import by.nika_doroshkevich.model.User;
+import by.nika_doroshkevich.security.AppAuthException;
 import by.nika_doroshkevich.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,9 +26,9 @@ public class DetailsService implements UserDetailsService {
 
         User user = userService.getUserByUsername(username);
 
-        /*if (user == null) {
-            throw new UsernameNotFoundException(AuthException.NOT_FOUND.getAppException());
-        }*/
+        if (user == null) {
+            throw new UsernameNotFoundException(AppAuthException.NOT_FOUND.getAppException());
+        }
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
