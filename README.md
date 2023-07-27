@@ -8,7 +8,7 @@ __Vox Messenger - it's a simple social network.__
 
 1. Project: three-layer architecture.
 2. Build automation tool: Maven.
-3. Frameworks: Hibernate, Spring Boot, Spring Data JPA, Spring Security, Spring WebSocket.
+3. Frameworks: Hibernate, Spring Boot, Spring Data JPA, Spring Security, Spring WebSockets.
 4. Database: MySQL.
 5. View: Thymeleaf, HTML, Bootstrap, JavaScript, jQuery.
 6. Tools: Lombok.
