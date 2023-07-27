@@ -19,7 +19,7 @@ ________________________________________________________________________________
 
 1. __Java 11__
 2. MySQL 5.7.36
-3. (optional) Maven 3.8.6
+3. (optional) Maven 3.8
 4. (optional) Tomcat 8
 5. (optional) Git
 6. (optional) IDE (Eclipse or IntelliJ IDEA)
